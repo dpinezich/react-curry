@@ -1,28 +1,46 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {ingredients, base, spices} from "./cooking_sets";
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+    shuffle(xs) {
+        let index = 0;
+        let shuffled = [];
+        xs.forEach(value => {
+            let rand = Math.floor(Math.random() * index++);
+            shuffled[index - 1] = shuffled[rand];
+            shuffled[rand] = value;
+        });
+        return shuffled;
+    };
+
+
+    random_sample = (n, xs) => {
+        return this.shuffle(xs).slice(0, n);
+    };
+
+    pick = (xs) => {
+        return (n) => {
+            return this.random_sample(n, xs).forEach((a) => {
+                console.log("* ", a, "\n");
+            });
+        };
+    };
+
+    componentDidMount() {
+        console.log('Curry needs a wet base. Following base would be nice: ');
+        this.pick(base)(1);
+        console.log('Curry gets now roasted in a pan. There is a selection of spices premade for you: ');
+        this.pick(spices)(5);
+        console.log('There is only one main ingredient, for your cury it will be: ');
+        this.pick(ingredients)(1);
+    }
+
+    render() {
+        return (
+            <p>Have a look at the console tools :)</p>
+        );
+    }
 }
 
 export default App;
